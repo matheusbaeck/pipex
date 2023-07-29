@@ -1,0 +1,9 @@
+total 116
+-rw-rw-r-- 1 math42 math42  1281 Jul  6 03:27 Makefile
+-rw-rw-r-- 1 math42 math42     0 Jul  6 00:14 f_infile
+-rw-rw-r-- 1 math42 math42   444 Jul 25 10:16 f_outfile
+drwxrwxr-x 2 math42 math42 16384 Jul 24 15:29 libft
+-rw-rw-r-- 1 math42 math42  3262 Jul 25 09:14 main.c
+-rw-rw-r-- 1 math42 math42  2764 Jul 24 10:53 main_old.c
+-rwxrwxr-x 1 math42 math42 21536 Jul 24 15:29 pipex
+-rw-rw-r-- 1 math42 math42  1043 Jul  7 01:08 pipex.h

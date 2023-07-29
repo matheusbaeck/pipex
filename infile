@@ -1,0 +1,10 @@
+.
+..
+Makefile
+f_infile
+f_outfile
+libft
+main.c
+main_old.c
+pipex
+pipex.h

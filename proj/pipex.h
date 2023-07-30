@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/07/07 01:08:39 by math42           ###   ########.fr       */
+/*   Updated: 2023/07/30 13:47:07 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,23 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
+
+enum	e_main_errors {
+	FEW_ARGUMENTS = -1,
+	CANT_OPEN_FILE = -2,
+	CANT_INIT_PIPES = -3,
+	CANT_FORK = -4
+};
+
+//pathing
+int		get_std_paths(char **envp, char ***paths);
+int		get_command_pathname(char **comm, char **envp);
+int		exec_command(char *argv, char **envp);
+//pipe
+void	close_all(int **fd, int i);
+void	close_pipes(int **fd, int i);
+int		close_pipesl(int **list, int i, int size);
+void	free_pipes(int ****fd, int i);
+int		init_pipes(int argc, char **argv, int ***fd);
 
 #endif

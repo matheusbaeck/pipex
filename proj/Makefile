@@ -6,7 +6,7 @@
 #    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/07/06 03:27:49 by math42           ###   ########.fr        #
+#    Updated: 2023/07/30 12:08:26 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = cc
 
-SRCS =  main.c
+SRCS =  main.c pathing.c pipe.c
 
 OBJS = ${SRCS:.c=.o}
 

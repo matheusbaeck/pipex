@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/07/30 13:47:07 by math42           ###   ########.fr       */
+/*   Updated: 2023/07/31 15:09:45 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ enum	e_main_errors {
 int		get_std_paths(char **envp, char ***paths);
 int		get_command_pathname(char **comm, char **envp);
 int		exec_command(char *argv, char **envp);
+int		do_open(char *fileName);
 //pipe
 void	close_all(int **fd, int i);
 void	close_pipes(int **fd, int i);

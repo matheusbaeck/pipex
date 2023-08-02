@@ -6,11 +6,12 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/07/30 11:00:56 by math42           ###   ########.fr       */
+/*   Updated: 2023/07/31 15:09:24 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <sys/stat.h> 
 
 int	get_std_paths(char **envp, char ***paths)
 {
@@ -69,3 +70,14 @@ int	exec_command(char *argv, char **envp)
 	exit(EXIT_FAILURE);
 	return (0);
 }
+
+int	do_open(char *fileName)
+{
+	int	fileDescriptor;
+
+	fileDescriptor = open(fileName, O_WRONLY | O_CREAT
+			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+
+	return (fileDescriptor);
+}
+

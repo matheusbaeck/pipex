@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/07/30 14:08:00 by math42           ###   ########.fr       */
+/*   Updated: 2023/07/31 15:13:46 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	printclose_pipesl(int i, int size)
 {
+	int pid = i;
 	i--;
 	while (++i < size)
 	{
-		printf("Child, closing fd[%d][0]\n", i);
+		printf("Pid %d, closing fd[%d][0]\n", pid, i);
 		if (i != 0)
-			printf("Child, closing fd[%d][1]\n", i);
+			printf("Pid %d, closing fd[%d][1]\n", pid, i);
 	}
-	printf("Child, closing fd[0][1]\n");
+	printf("Pid %d, closing fd[0][1]\n", pid);
 	return (0);
 }
 
@@ -67,9 +68,12 @@ int main(int argc, char **argv, char **envp)
 			dup2(fd[((i+1) % (argc - 3))][1], STDOUT_FILENO);
 			close_pipesl(fd, i, (argc - 3));
 			exec_command(argv[i + 2], envp);
+			perror("execve");
+			exit(EXIT_FAILURE);
 			return (0);
 		}
-		wait(NULL);
+		int w = wait(NULL);
+		printf("wait %d\n", w);
 	}
 	close(fd[0][1]);
 	printf("end\n");

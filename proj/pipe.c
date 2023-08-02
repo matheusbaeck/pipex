@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:16 by math42            #+#    #+#             */
-/*   Updated: 2023/07/30 14:06:14 by math42           ###   ########.fr       */
+/*   Updated: 2023/07/31 15:07:19 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int	close_pipesl(int **list, int i, int size)
 	while (++i < size)
 	{
 		if (close(list[i][0]) != 0)
-			perror("Error closing pipe list");
+			perror("Error closing pipe list fd[i][0]");
 		if (i != 0 && close(list[i][1]) != 0)
-			perror("Error closing pipe list");
+			perror("Error closing pipe list fd[i][1]");
 	}
 	if (close(list[0][1]) != 0)
-			perror("Error closing pipe list");
+			perror("Error closing pipe list fd[0][1]");
 	return (0);
 }
 
@@ -83,8 +83,8 @@ int	init_pipes(int argc, char **argv, int ***fd)
 			return (close_pipes(*fd, i), free_pipes(&fd, (argc - 3)), -3);
 	}
 	(*fd)[0][0] = open(argv[1], O_RDONLY);
-	(*fd)[0][1] = open(argv[argc - 1], O_WRONLY);
-	if (fd[0][0] < 0 || fd[0][1] < 0)
+	(*fd)[0][1] = do_open(argv[argc - 1]);
+	if ((*fd)[0][0] < 0 || (*fd)[0][1] < 0)
 		return (close_all(*fd, (argc - 3)), free_pipes(&fd, (argc - 3)),
 			perror("Error opening file\n"), -4);
 	return (0);

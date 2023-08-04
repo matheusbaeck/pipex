@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/08/04 19:03:36 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/08/04 20:17:31 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,18 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 	return (do_exec(argv[dt->i + 2], envp));
 }
 
+void leaks(void)
+{
+	system("leaks -q pipex");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dt;
 	int		*parent;
 	int		status;
 
+	atexit(leaks);
 	if (init_all(argc, argv, &parent, &(dt.fd)))
 		return (perror("Error, init_all"), EXIT_FAILURE);
 	dt.i = -1;
@@ -51,10 +57,15 @@ int	main(int argc, char **argv, char **envp)
 		close(dt.fd[dt.i][0]);
 		if (dt.i != 0)
 			close(dt.fd[dt.i][1]);
-		wait(&status);
-		if (status != EXIT_SUCCESS)
-			return (EXIT_FAILURE);
+		// if (status != EXIT_SUCCESS)
+		// 	return (EXIT_FAILURE);
+	}
+	for(;;) {
+		int pid = waitpid(-1, &status, 0);
+		WEXITSTATUS(status);
+		if (pid == -1)
+			break;
 	}
 	close(dt.fd[0][1]);
 	return (0);
-}
+} // 

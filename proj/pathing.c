@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/08/04 19:05:15 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/08/04 20:16:33 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	do_exec(char *argv, char **envp)
 	execve(cmd, args, NULL);
 	perror("execve");
 	return (EXIT_FAILURE);
-}
+} // always free args, free commands if execv fails
 
 int	do_open(char *fileName)
 {

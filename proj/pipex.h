@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/07/31 15:09:45 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/03 16:37:11 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <sys/stat.h> 
 
 enum	e_main_errors {
 	FEW_ARGUMENTS = -1,
@@ -29,7 +30,7 @@ enum	e_main_errors {
 //pathing
 int		get_std_paths(char **envp, char ***paths);
 int		get_command_pathname(char **comm, char **envp);
-int		exec_command(char *argv, char **envp);
+int		do_exec(char *argv, char **envp);
 int		do_open(char *fileName);
 //pipe
 void	close_all(int **fd, int i);

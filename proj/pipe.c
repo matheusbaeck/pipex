@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:16 by math42            #+#    #+#             */
-/*   Updated: 2023/07/31 15:07:19 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/03 21:11:56 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	close_pipesl(int **list, int i, int size)
 			perror("Error closing pipe list fd[i][1]");
 	}
 	if (close(list[0][1]) != 0)
-			perror("Error closing pipe list fd[0][1]");
+		perror("Error closing pipe list fd[0][1]");
 	return (0);
 }
 
@@ -58,7 +58,6 @@ void	free_pipes(int ****fd, int i)
 		free((**fd)[i]);
 	}
 	free(**fd);
-	perror("Memory freed\n");
 }
 
 int	init_pipes(int argc, char **argv, int ***fd)
@@ -67,25 +66,25 @@ int	init_pipes(int argc, char **argv, int ***fd)
 
 	*fd = (int **)malloc((argc - 3) * sizeof(int *));
 	if (*fd == NULL)
-		return (-1);
+		return (EXIT_FAILURE);
 	i = -1;
 	while (++i < (argc - 3))
 	{
 		(*fd)[i] = (int *)malloc(2 * sizeof(int));
 		if (*fd == NULL)
-			return (free_pipes(&fd, i), -2);
+			return (free_pipes(&fd, i), EXIT_FAILURE);
 	}
 
 	i = 0;
 	while (++i < (argc - 3))
 	{
 		if (pipe((*fd)[i]) == -1)
-			return (close_pipes(*fd, i), free_pipes(&fd, (argc - 3)), -3);
+			return (close_pipes(*fd, i), free_pipes(&fd, (argc - 3)), 1);
 	}
 	(*fd)[0][0] = open(argv[1], O_RDONLY);
 	(*fd)[0][1] = do_open(argv[argc - 1]);
 	if ((*fd)[0][0] < 0 || (*fd)[0][1] < 0)
 		return (close_all(*fd, (argc - 3)), free_pipes(&fd, (argc - 3)),
-			perror("Error opening file\n"), -4);
-	return (0);
+			perror("Error, open or do_open"), EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

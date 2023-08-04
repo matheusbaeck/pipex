@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_four.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 09:14:45 by math42            #+#    #+#             */
-/*   Updated: 2023/07/29 21:54:29 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/03 16:07:29 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	get_command_pathname(char **comm, char **envp)
 	return (printf("command not found\n"), -1);
 }
 
-int	exec_command(char *argv, char **envp)
+int	do_exec(char *argv, char **envp)
 {
 	char	**cmd;
 	char	*path;
@@ -135,7 +135,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			conect_in_out(fd, i, argc);
 			close_pipes(fd, argc - 1);
-			exec_command(argv[i + 2], envp);
+			do_exec(argv[i + 2], envp);
 		}
 		close(fd[i][0]);
 		if (i != 0)

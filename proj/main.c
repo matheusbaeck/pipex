@@ -6,76 +6,69 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/07/31 15:13:46 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/03 20:34:12 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	printclose_pipesl(int i, int size)
+int	init_all(int argc, char **argv, int **parent, int ***fd)
 {
-	int pid = i;
-	i--;
-	while (++i < size)
-	{
-		printf("Pid %d, closing fd[%d][0]\n", pid, i);
-		if (i != 0)
-			printf("Pid %d, closing fd[%d][1]\n", pid, i);
-	}
-	printf("Pid %d, closing fd[0][1]\n", pid);
-	return (0);
+	if (argc < 5)
+		return (perror("Error, few arguments"), EXIT_FAILURE);
+	*parent = (int *)malloc((argc - 3) * sizeof(int));
+	if (*parent == NULL)
+		return (perror("Error allocating memory for parent id"), EXIT_FAILURE);
+	if (init_pipes(argc, argv, &(*fd)) != 0)
+		return (perror("Error, init_pipes"), EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+
 }
 
-int main(int argc, char **argv, char **envp)
+int	task_child(int argc, char **argv, char **envp, int i)
 {
-	int	*parent;
-	int	**fd;
-	int	i;
 
-	if (argc < 5)
-		return (perror("Error, few arguments"), -1);
+}
 
-	parent = (int *)malloc((argc - 3) * sizeof(int));
-	if (parent == NULL)
-		return (perror("Error allocating memory for parent id"), -1);
+int task_parent()
+{
 
-	if (init_pipes(argc, argv, &fd) != 0)
-		return (-3);
-	printf("All files opened\n");
+}
 
-	i = -1;
-	while (++i < (argc - 3))
+typedef struct s_pipex_args
+{
+	int		**fd;
+	int		i;
+}			t_data;
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	dt;
+	int		*parent;
+	int		status;
+
+	if (init_all(argc, argv, &parent, &(dt.fd)))
+		return (perror("Error, init_all"), EXIT_FAILURE);
+	dt.i = -1;
+	while (++dt.i < (argc - 3))
 	{
-		printf("FORK\n");
-		parent[i] = fork();
-		if (parent[i] == -1)
-			return(perror("Error trying to fork process\n"), -4);
-		if (parent[i])
+		parent[dt.i] = fork();
+		if (parent[dt.i] == -1)
+			return (perror("Error, trying to fork processes\n"), 1);
+		if (!parent[dt.i])
 		{
-			close(fd[i][0]);
-			printf("Parent, closing fd[%d][0]\n", i);
-			if (i != 0)
-			{
-				close(fd[i][1]);
-				printf("Parent, closing fd[%d][1]\n", i);
-			}
+			dup2(dt.fd[dt.i][0], STDIN_FILENO);
+			dup2(dt.fd[((dt.i + 1) % (argc - 3))][1], STDOUT_FILENO);
+			close_pipesl(dt.fd, dt.i, (argc - 3));
+			return (do_exec(argv[dt.i + 2], envp));
 		}
-		if (!parent[i])
-		{
-			printf("Pid %d, reading from fd[%d][0], writing on fd[%d][1]\n", i, i, ((i+1) % (argc - 3)));
-			printclose_pipesl(i, (argc - 3));
-			dup2(fd[i][0], STDIN_FILENO);
-			dup2(fd[((i+1) % (argc - 3))][1], STDOUT_FILENO);
-			close_pipesl(fd, i, (argc - 3));
-			exec_command(argv[i + 2], envp);
-			perror("execve");
-			exit(EXIT_FAILURE);
-			return (0);
-		}
-		int w = wait(NULL);
-		printf("wait %d\n", w);
+		close(dt.fd[dt.i][0]);
+		if (dt.i != 0)
+			close(dt.fd[dt.i][1]);
+		wait(&status);
+		if (status != EXIT_SUCCESS)
+			return (EXIT_FAILURE);
 	}
-	close(fd[0][1]);
-	printf("end\n");
+	close(dt.fd[0][1]);
 	return (0);
 }

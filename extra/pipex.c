@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/07/30 00:10:39 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/03 20:49:53 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	get_command_pathname(char **comm, char **envp)
 	return (printf("command not found\n"), -1);
 }
 
-int	exec_command(char *argv, char **envp)
+int	do_exec(char *argv, char **envp)
 {
 	char	**cmd;
 	char	*path;
@@ -98,7 +98,6 @@ void	free_pipes(int ****fd, int i)
 		free((**fd)[i]);
 	}
 	free(**fd);
-	perror("Error allocating memory for fd[i] array\nMemory freed\n");
 }
 
 int	init_pipes(int argc, int ***fd)

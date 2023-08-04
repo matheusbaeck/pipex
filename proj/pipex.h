@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/08/03 16:37:11 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/04 18:10:48 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ enum	e_main_errors {
 	CANT_INIT_PIPES = -3,
 	CANT_FORK = -4
 };
+
+typedef struct s_pipex_data
+{
+	int		**fd;
+	int		i;
+}			t_data;
 
 //pathing
 int		get_std_paths(char **envp, char ***paths);

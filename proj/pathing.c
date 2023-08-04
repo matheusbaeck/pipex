@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/08/03 21:22:26 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/04 19:05:15 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,30 @@ int	get_command_pathname(char **cmd, char **envp)
 		temp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(temp, *cmd);
 		free(temp);
-		printf("get_cmd %s\n", path);
 		if (access(path, F_OK) == 0)
 			return (free(*cmd), *cmd = path, EXIT_SUCCESS);
+		free(path);
 	}
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
 	return (EXIT_FAILURE);
-}// need to free paths properly in any exit, obs duoble chek other frees
+}
 
 int	do_exec(char *argv, char **envp)
 {
-	char	**cmd;
-	char	*path;
+	char	**args;
+	char	*cmd;
 
-	cmd = ft_split(argv, ' ');
-	path = ft_strdup(cmd[0]);
-	printf("doexec %s\n", path);
-	if (get_command_pathname(&path, envp))
-		return (perror("Error on run command"), free(path), -3);
-	execve(path, cmd, NULL);
+	args = ft_split(argv, ' ');
+	cmd = ft_strdup(args[0]);
+	if (ft_strncmp(cmd, "./", 2))
+	{
+		if (get_command_pathname(&cmd, envp))
+			return (perror("Error on run command"), free(cmd), -3);
+	}
+	execve(cmd, args, NULL);
 	perror("execve");
 	return (EXIT_FAILURE);
 }
@@ -79,7 +85,5 @@ int	do_open(char *fileName)
 
 	fd = open(fileName, O_WRONLY | O_CREAT
 			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-
 	return (fd);
 }
-

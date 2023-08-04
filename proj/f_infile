@@ -1,9 +1,15 @@
-total 116
--rw-rw-r-- 1 math42 math42  1281 Jul  6 03:27 Makefile
--rw-rw-r-- 1 math42 math42     0 Jul  6 00:14 f_infile
--rw-rw-r-- 1 math42 math42   444 Jul 25 10:16 f_outfile
-drwxrwxr-x 2 math42 math42 16384 Jul 24 15:29 libft
--rw-rw-r-- 1 math42 math42  3262 Jul 25 09:14 main.c
--rw-rw-r-- 1 math42 math42  2764 Jul 24 10:53 main_old.c
--rwxrwxr-x 1 math42 math42 21536 Jul 24 15:29 pipex
--rw-rw-r-- 1 math42 math42  1043 Jul  7 01:08 pipex.h
+total 104
+drwxr-xr-x  14 mamagalh  2019    476 Aug  4 18:06 .
+drwxr-xr-x   7 mamagalh  2019    238 Aug  4 17:42 ..
+-rw-r--r--   1 mamagalh  2019   1301 Aug  4 17:52 Makefile
+-rw-r--r--   1 mamagalh  2019      0 Aug  4 18:07 f_infile
+-rw-r--r--   1 mamagalh  2019      0 Aug  4 18:05 f_outfile
+-rw-r--r--   1 mamagalh  2019      9 Aug  4 18:05 f_outfile2
+drwxr-xr-x  50 mamagalh  2019   1700 Aug  4 17:53 libft
+-rw-r--r--   1 mamagalh  2019   2456 Aug  4 18:04 main.c
+----------   1 mamagalh  2019      0 Aug  2 19:13 no_permition
+-rw-r--r--   1 mamagalh  2019   2309 Aug  4 17:42 pathing.c
+-rw-r--r--   1 mamagalh  2019   2516 Aug  4 17:42 pipe.c
+-rwxr-xr-x   1 mamagalh  2019  22036 Aug  4 18:04 pipex
+-rw-r--r--   1 mamagalh  2019   1565 Aug  4 17:42 pipex.h
+-rw-r--r--   1 mamagalh  2019    890 Aug  4 17:42 test.sh

@@ -1,12 +1,1 @@
-Makefile
-f_infile
-f_outfile
-f_outfile2
-libft
-main.c
-outfile
-pathing.c
-pipe.c
-pipex
-pipex.h
-test.sh
+      27

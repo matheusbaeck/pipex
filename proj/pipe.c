@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:16 by math42            #+#    #+#             */
-/*   Updated: 2023/08/03 21:11:56 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/04 19:05:44 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	init_pipes(int argc, char **argv, int ***fd)
 		if (*fd == NULL)
 			return (free_pipes(&fd, i), EXIT_FAILURE);
 	}
-
 	i = 0;
 	while (++i < (argc - 3))
 	{

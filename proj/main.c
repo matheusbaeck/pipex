@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/08/03 20:34:12 by math42           ###   ########.fr       */
+/*   Updated: 2023/08/04 19:03:36 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,15 @@ int	init_all(int argc, char **argv, int **parent, int ***fd)
 	if (init_pipes(argc, argv, &(*fd)) != 0)
 		return (perror("Error, init_pipes"), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
-
 }
 
-int	task_child(int argc, char **argv, char **envp, int i)
+int	task_child(int argc, char **argv, char **envp, t_data *dt)
 {
-
+	dup2(dt->fd[dt->i][0], STDIN_FILENO);
+	dup2(dt->fd[((dt->i + 1) % (argc - 3))][1], STDOUT_FILENO);
+	close_pipesl(dt->fd, dt->i, (argc - 3));
+	return (do_exec(argv[dt->i + 2], envp));
 }
-
-int task_parent()
-{
-
-}
-
-typedef struct s_pipex_args
-{
-	int		**fd;
-	int		i;
-}			t_data;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -56,12 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		if (parent[dt.i] == -1)
 			return (perror("Error, trying to fork processes\n"), 1);
 		if (!parent[dt.i])
-		{
-			dup2(dt.fd[dt.i][0], STDIN_FILENO);
-			dup2(dt.fd[((dt.i + 1) % (argc - 3))][1], STDOUT_FILENO);
-			close_pipesl(dt.fd, dt.i, (argc - 3));
-			return (do_exec(argv[dt.i + 2], envp));
-		}
+			task_child(argc, argv, envp, &dt);
 		close(dt.fd[dt.i][0]);
 		if (dt.i != 0)
 			close(dt.fd[dt.i][1]);

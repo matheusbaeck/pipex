@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/08/04 20:17:31 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/08/07 19:23:13 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 	return (do_exec(argv[dt->i + 2], envp));
 }
 
-void leaks(void)
+void	leaks(void)
 {
 	system("leaks -q pipex");
 }
@@ -40,10 +40,11 @@ void leaks(void)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dt;
-	int		*parent;
+	pid_t	pid;
+	pid_t	*parent;
 	int		status;
 
-	atexit(leaks);
+	// atexit(leaks);
 	if (init_all(argc, argv, &parent, &(dt.fd)))
 		return (perror("Error, init_all"), EXIT_FAILURE);
 	dt.i = -1;
@@ -57,15 +58,14 @@ int	main(int argc, char **argv, char **envp)
 		close(dt.fd[dt.i][0]);
 		if (dt.i != 0)
 			close(dt.fd[dt.i][1]);
-		// if (status != EXIT_SUCCESS)
-		// 	return (EXIT_FAILURE);
 	}
-	for(;;) {
-		int pid = waitpid(-1, &status, 0);
-		WEXITSTATUS(status);
+	dt.i = -1;
+	while (++dt.i < (argc - 3))
+	{
+		pid = waitpid(-1, &status, 0);
 		if (pid == -1)
-			break;
+			perror("Error");
 	}
 	close(dt.fd[0][1]);
 	return (0);
-} // 
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/08/04 20:16:33 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/08/08 17:33:28 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,25 @@ int	do_exec(char *argv, char **envp)
 {
 	char	**args;
 	char	*cmd;
+	int		err;
 
 	args = ft_split(argv, ' ');
 	cmd = ft_strdup(args[0]);
 	if (ft_strncmp(cmd, "./", 2))
 	{
 		if (get_command_pathname(&cmd, envp))
-			return (perror("Error on run command"), free(cmd), -3);
+			return (free(cmd), -3);
 	}
-	execve(cmd, args, NULL);
-	perror("execve");
-	return (EXIT_FAILURE);
-} // always free args, free commands if execv fails
+	err = execve(cmd, args, NULL);
+	int i = -1;
+	while (args[++i])
+	{
+		free(args[i]);
+	}
+	free(args);
+	free(cmd);
+	return (err);
+}
 
 int	do_open(char *fileName)
 {

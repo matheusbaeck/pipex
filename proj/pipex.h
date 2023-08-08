@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/08/04 18:10:48 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/08/08 17:30:32 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,22 @@
 # include <sys/stat.h> 
 
 enum	e_main_errors {
-	FEW_ARGUMENTS = -1,
-	CANT_OPEN_FILE = -2,
-	CANT_INIT_PIPES = -3,
-	CANT_FORK = -4
+	// MAIN
+	FORK_FAIL = 2,
+	EXEC_FAIL = 3,
+	// INIT_ALL
+	FEW_ARGUMENTS = 11,
+	MALLOC_FAIL_PARENT = 21,
+	// INIT_PIPES
+	MALLOC_FAIL_PTRCHILD = 131,
+	MALLOC_FAIL_CHILD = 232,
+	OPEN_PIPE = 332,
+	OPEN_FILE = 432
 };
 
 typedef struct s_pipex_data
 {
+	pid_t	*parent;
 	int		**fd;
 	int		i;
 }			t_data;

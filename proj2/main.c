@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/07 18:27:11 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/07 19:27:02 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	exit_error(int err)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dt;
+	int 	i;
+	printf("%i\n", getpid());
 
 	atexit(leaks);
 	if (exit_error(init_all(argc, argv, &(dt.parent), &(dt.fd))) != 0)
@@ -86,6 +88,11 @@ int	main(int argc, char **argv, char **envp)
 	while (++dt.i < (argc - 3))
 	{
 		dt.parent[dt.i] = fork();
+		i = -1;
+		while (++i <= dt.i)
+		{
+			printf("process %i, %i\n", dt.parent[dt.i], getpid());
+		}
 		if (dt.parent[dt.i] == -1)
 			return (exit_error(FORK_FAIL));
 		if (!dt.parent[dt.i])

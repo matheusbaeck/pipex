@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 18:31:50 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/02/23 19:33:03 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/07/05 23:24:03 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
-	if (!(len_s1 > SIZE_T_MAX) && !(len_s2 > SIZE_T_MAX))
+	if (!(len_s1 > SSIZE_MAX) && !(len_s2 > SSIZE_MAX))
 	{
 		s3 = malloc((len_s1 + len_s2 + 1) * sizeof(char));
 		if (!s3)

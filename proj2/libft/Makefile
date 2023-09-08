@@ -3,21 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+         #
+#    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 10:37:38 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/07 15:13:17 by mamagalh@st      ###   ########.fr        #
+#    Updated: 2023/07/05 23:51:59 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = libft.a
 
+HEADER_NAME = libft.h
+
 NAME_BONUS = libft_bonus.a
 
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror -c -g -o
+FLAGS = -Wall -Wextra -Werror -c -o
 
 LIB_CC = ar rcs
 
@@ -75,18 +77,17 @@ BONUS_OBJ = $(BONUS_SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(LIB_CC) $(NAME) $(OBJ)
-
-
+	$(LIB_CC) $(NAME) $(OBJ) $(HEADER_NAME)
+	make clean
 
 %.o:%.c
 	$(CC) $(FLAGS) $@ $<
 
 clean:
-	rm -rf *.o *.dSYM *.out *.a
+	rm -rf *.o *.dSYM *.out
 
 fclean: clean
-	rm -f $(NAME) $(NAME_BONUS)
+	rm -f $(NAME) $(NAME_BONUS) *.a
 
 re: fclean all
 
@@ -94,5 +95,5 @@ bonus_re: fclean bonus
 
 bonus: $(NAME_BONUS)
 
-$(NAME_BONUS): $(OBJ) $(BONUS_OBJ)
+$(NAME_BONUS): $(OBJ) $(BONUS_OBJ) $(HEADER_NAME)
 	$(LIB_CC) $(NAME_BONUS) $(OBJ) $(BONUS_OBJ)

@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/09 17:54:53 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/09 18:11:54 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	main(int argc, char **argv, char **envp)
 	t_data	dt;
 	int		status;
 
-	// atexit(leaks);
 	if (error_handler(init_all(argc, argv, &(dt.pid), &(dt.fd))))
 		return (EXIT_FAILURE);
 	dt.i = -1;
@@ -98,7 +97,10 @@ int	main(int argc, char **argv, char **envp)
 	}
 	dt.i = -1;
 	while (++dt.i < (argc - 3))
+	{
 		waitpid(dt.pid[dt.i], &status, 0);
+		error_handler(status);
+	}
 	close(dt.fd[0][1]);
 	free_all(argc, &dt);
 	return (0);

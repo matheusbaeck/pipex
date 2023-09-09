@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/09 17:08:56 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/09 18:13:19 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,13 @@ int	do_exec(char *argv, char **envp)
 	if (ft_strncmp(cmd, "./", 2))
 	{
 		if (get_command_pathname(&cmd, envp))
-			return (free(cmd), free(args), PATH_ERROR);
+		{
+			free(cmd);
+			free(args);
+			exit (PATH_ERROR);
+		}
 	}
 	err = execve(cmd, args, envp);
-	printf("exec fail");
 	i = -1;
 	while (args[++i])
 	{
@@ -92,7 +95,7 @@ int	do_exec(char *argv, char **envp)
 	}
 	free(args);
 	free(cmd);
-	return(err);
+	return (err);
 }
 
 int	do_open(char *fileName)

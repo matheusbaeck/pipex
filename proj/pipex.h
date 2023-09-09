@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/09 17:13:14 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/09 18:13:46 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,14 @@
 # include <sys/stat.h> 
 
 enum	e_main_errors {
-	// MAIN
 	FORK_FAIL = 2,
 	EXEC_FAIL = 3,
-	// INIT_ALL
 	FEW_ARGUMENTS = 11,
 	MALLOC_FAIL_PID = 21,
-	// INIT_PIPES
 	MALLOC_FAIL_PTRCHILD = 131,
 	MALLOC_FAIL_CHILD = 232,
 	OPEN_PIPE = 332,
 	OPEN_FILE = 432,
-	//TASK_CHILD/GET_PATH
 	PATH_ERROR = 1273
 };
 

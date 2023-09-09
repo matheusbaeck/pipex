@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_old.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:30 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/07/07 03:25:19 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/09 18:18:09 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	get_command_pathname(char **comm, char **envp)
 	int		i;
 
 	if (access(*comm, F_OK) == 0)
-		return (printf("no add to path\n"),0);
+		return (0);
 	if (get_std_paths(envp, &paths) == -1)
-		return (printf("no standart path\n")-1);
+		return (-1);
 	i = -1;
 	while (paths[++i])
 	{
@@ -52,7 +52,7 @@ int	get_command_pathname(char **comm, char **envp)
 		if (access(path, F_OK) == 0)
 			return (free(*comm), *comm = path, 0);
 	}
-	return (printf("command not found\n"), -1);
+	return (-1);
 }
 
 enum	e_main_errors {
@@ -84,7 +84,7 @@ int	run_command(char **argv, char **envp)
 	args.cmd = ft_split(argv[2], ' ');
 	args.path = ft_strdup(args.cmd[0]);
 	if (get_command_pathname(&args.path, envp))
-		return (printf("here4\n"), free(args.path), -3);
+		return (free(args.path), -3);
 	execve(args.path, args.cmd, NULL);
 	return (0);
 }
@@ -94,8 +94,6 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid;
 	int		fd[2];
 
-	/* if (argc < 5)
-		return (printf("few args\n"), -1); */
 	if (pipe(fd) == -1)
 		return (-1);
 	pid = fork();

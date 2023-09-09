@@ -1,0 +1,10 @@
+total 40
+drwxr-xr-x  9 mamagalh  2019   306 Sep  9 18:06 .
+drwxr-xr-x  7 mamagalh  2019   238 Sep  9 17:45 ..
+-rw-r--r--  1 mamagalh  2019   248 Sep  7 16:28 a.sh
+-rw-r--r--  1 mamagalh  2019    24 Sep  7 14:56 f_fileout
+-r--------  1 mamagalh  2019   819 Sep  7 14:56 f_infile
+-rw-r--r--  1 mamagalh  2019     0 Sep  9 18:06 f_outfile
+-rw-r--r--  1 mamagalh  2019    53 Sep  9 18:06 f_outfile2
+-rw-r--r--  1 mamagalh  2019     0 Sep  7 16:20 file
+-rw-r--r--  1 mamagalh  2019  1802 Sep  7 17:04 test.sh

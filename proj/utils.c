@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/07 17:13:36 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/08 12:28:30 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_all(int argc, t_data *dt)
 		free(dt->fd[dt->i]);
 	}
 	free(dt->fd);
-	free(dt->parent);
+	free(dt->pid);
 }
 
 void	leaks(void)

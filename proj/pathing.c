@@ -6,7 +6,7 @@
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/07 18:39:39 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/09 17:08:56 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ int	get_std_paths(char **envp, char ***paths)
 	return (EXIT_FAILURE);
 }
 
+void	free_paths(char ***paths)
+{
+	int	i;
+
+	i = -1;
+	while ((*paths)[++i])
+		free((*paths)[i]);
+	free(*paths);
+}
+
 int	get_command_pathname(char **cmd, char **envp)
 {
 	char	**paths;
@@ -52,13 +62,10 @@ int	get_command_pathname(char **cmd, char **envp)
 		path = ft_strjoin(temp, *cmd);
 		free(temp);
 		if (access(path, X_OK) == 0)
-			return (free(*cmd), *cmd = path, EXIT_SUCCESS);
+			return (free(*cmd), *cmd = path, free_paths(&paths), EXIT_SUCCESS);
 		free(path);
 	}
-	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	free_paths(&paths);
 	return (EXIT_FAILURE);
 }
 
@@ -74,9 +81,10 @@ int	do_exec(char *argv, char **envp)
 	if (ft_strncmp(cmd, "./", 2))
 	{
 		if (get_command_pathname(&cmd, envp))
-			return (free(cmd), -3);
+			return (free(cmd), free(args), PATH_ERROR);
 	}
-	err = execve(cmd, args, NULL);
+	err = execve(cmd, args, envp);
+	printf("exec fail");
 	i = -1;
 	while (args[++i])
 	{
@@ -84,7 +92,7 @@ int	do_exec(char *argv, char **envp)
 	}
 	free(args);
 	free(cmd);
-	exit(err);
+	return(err);
 }
 
 int	do_open(char *fileName)

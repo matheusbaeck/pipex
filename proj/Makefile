@@ -6,7 +6,7 @@
 #    By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/07 18:14:10 by mamagalh@st      ###   ########.fr        #
+#    Updated: 2023/09/09 17:46:55 by mamagalh@st      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,4 +41,4 @@ ffclean: fclean
 re: fclean all
 
 test:
-	./pipex f_infile ls ls f_outfile
+	bash /Users/mamagalh/pipex/test/test.sh

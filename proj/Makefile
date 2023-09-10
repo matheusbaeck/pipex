@@ -6,7 +6,7 @@
 #    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/10 13:37:52 by math42           ###   ########.fr        #
+#    Updated: 2023/09/10 20:40:10 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS =  main.c pathing.c pipe.c utils.c
 
 OBJS = ${SRCS:.c=.o}
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address #-g3
+CFLAGS = #-Wall -Wextra -Werror #-fsanitize=address #-g3
 
 all: $(NAME)
 

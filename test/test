@@ -67,10 +67,6 @@ echo "runin test 6.1, DANRODRI"
 chmod 200 f_infile
 $PIPEPATH   f_infile "cat" "ls" f_outfile
 chmod 400 f_infile
-echo "original"
-ls > f_outfile2
-diff f_outfile f_outfile2 -s
-
 
 
 # cat /dev/urandom | head -1

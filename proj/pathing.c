@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/09 18:13:19 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/10 23:16:48 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	free_paths(char ***paths)
+{
+	int	i;
+
+	i = -1;
+	while ((*paths)[++i])
+		free((*paths)[i]);
+	free(*paths);
+}
 
 int	get_std_paths(char **envp, char ***paths)
 {
@@ -32,16 +42,6 @@ int	get_std_paths(char **envp, char ***paths)
 		}
 	}
 	return (EXIT_FAILURE);
-}
-
-void	free_paths(char ***paths)
-{
-	int	i;
-
-	i = -1;
-	while ((*paths)[++i])
-		free((*paths)[i]);
-	free(*paths);
 }
 
 int	get_command_pathname(char **cmd, char **envp)
@@ -87,7 +87,7 @@ int	do_exec(char *argv, char **envp)
 			exit (PATH_ERROR);
 		}
 	}
-	err = execve(cmd, args, envp);
+	err = execve(cmd, args, NULL);
 	i = -1;
 	while (args[++i])
 	{
@@ -96,13 +96,4 @@ int	do_exec(char *argv, char **envp)
 	free(args);
 	free(cmd);
 	return (err);
-}
-
-int	do_open(char *fileName)
-{
-	int	fd;
-
-	fd = open(fileName, O_WRONLY | O_CREAT
-			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	return (fd);
 }

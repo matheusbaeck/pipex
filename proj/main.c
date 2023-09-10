@@ -3,105 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/09 18:11:54 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/10 23:20:43 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	init_all(int argc, char **argv, int **pid, int ***fd)
+int	init_all(int argc, int ***fd)
 {
 	int	status;
 
 	if (argc < 5)
 		return (FEW_ARGUMENTS);
-	*pid = (int *)malloc((argc - 3) * sizeof(int));
-	if (*pid == NULL)
-		return (MALLOC_FAIL_PID);
-	status = init_pipes(argc, argv, &(*fd));
+	status = init_pipes(fd);
 	if (status != 0)
-		return (free(*pid), status);
+		return (status);
 	return (EXIT_SUCCESS);
 }
 
 int	task_child(int argc, char **argv, char **envp, t_data *dt)
 {
-	if (!(dt->pid[dt->i]))
+	if (dt->i == 0)
 	{
-		dup2(dt->fd[dt->i][0], STDIN_FILENO);
-		dup2(dt->fd[((dt->i + 1) % (argc - 3))][1], STDOUT_FILENO);
-		close_pipesl(dt->fd, dt->i, (argc - 3));
-		return (do_exec(argv[dt->i + 2], envp));
+		dt->fd[0][0] = open(argv[1], O_RDONLY);
+		if (dt->fd[0][0] < 0)
+			exit (dt->fd[0][0]);
+		fd_swap(&dt->fd[0][0], &dt->fd[1][0]);
 	}
-	return (-1);
+	else if ((dt->i + 1) % (argc - 3) == 0)
+	{
+		dt->fd[0][1] = do_open(argv[argc - 1]);
+		if (dt->fd[0][1] < 0)
+			exit (dt->fd[0][1]);
+		fd_swap(&dt->fd[0][1], &dt->fd[2][1]);
+	}
+	dup2(dt->fd[1][0], STDIN_FILENO);
+	dup2(dt->fd[2][1], STDOUT_FILENO);
+	close_pipes(&(dt->fd), 0, 3);
+	exit (do_exec(argv[dt->i + 2], envp));
 }
 
 int	task_parent(t_data *dt)
 {
-	if (dt->pid[dt->i])
-	{
-		close(dt->fd[dt->i][0]);
-		if (dt->i != 0)
-			close(dt->fd[dt->i][1]);
-	}
-	return (-2);
+	error_handler(close(dt->fd[1][0]));
+	if (dt->i != 0)
+		error_handler(close(dt->fd[1][1]));
+	dt->fd[1] = dt->fd[2];
+	dt->fd[2] = (int *)malloc(2 * sizeof(int));
+	if (pipe(dt->fd[2]) == -1)
+		return(error_handler(-4));
 }
 
-int	error_handler(int err)
+void	main_task(int argc, char **argv, char **envp, t_data *dt)
 {
-	if (err == 0)
-		return (0);
-	else if (err == FORK_FAIL)
-		perror("error trying to fork");
-	else if (err == EXEC_FAIL)
-		perror("execution error");
-	else if (err == FEW_ARGUMENTS)
-		perror("few arguments");
-	else if (err == MALLOC_FAIL_PID)
-		perror("malloc fail");
-	else if (err == MALLOC_FAIL_PTRCHILD)
-		perror("malloc fail");
-	else if (err == MALLOC_FAIL_CHILD)
-		perror("malloc fail");
-	else if (err == OPEN_PIPE)
-		perror("fail to open a pipe");
-	else if (err == OPEN_PIPE)
-		perror("fail to open a file");
-	else if (err == PATH_ERROR)
-		perror("command not found");
-	else
-		perror("error_handler");
-	return (err);
+	dt->i = -1;
+	while (++dt->i < (argc - 3))
+	{
+		dt->pid = fork();
+		if (dt->pid == -1)
+		{
+			error_handler(FORK_FAIL);
+			break ;
+		}
+		if (!dt->pid)
+			task_child(argc, argv, envp, dt);
+		if (task_parent(dt))
+			break ;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dt;
 	int		status;
+	int		i;
 
-	if (error_handler(init_all(argc, argv, &(dt.pid), &(dt.fd))))
+	if (error_handler(init_all(argc, &(dt.fd))))
 		return (EXIT_FAILURE);
-	dt.i = -1;
-	while (++dt.i < (argc - 3))
+	main_task(argc, argv, envp, &dt);
+	i = 0;
+	while (++i <= dt.i)
 	{
-		dt.pid[dt.i] = fork();
-		if (dt.pid[dt.i] == -1)
-			return (free_all(argc, &dt), error_handler(FORK_FAIL));
-		if (!dt.pid[dt.i])
-			error_handler(task_child(argc, argv, envp, &dt));
-		else
-			task_parent(&dt);
-	}
-	dt.i = -1;
-	while (++dt.i < (argc - 3))
-	{
-		waitpid(dt.pid[dt.i], &status, 0);
+		waitpid(-1, &status, 0);
 		error_handler(status);
 	}
 	close(dt.fd[0][1]);
-	free_all(argc, &dt);
+	free_all(&dt);
 	return (0);
 }

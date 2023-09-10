@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/09 18:13:46 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/10 13:43:16 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,5 @@ void	free_pipes(int ****fd, int i);
 int		init_pipes(int argc, char **argv, int ***fd);
 //utils
 void	free_all(int argc, t_data *dt);
-void	leaks(void);
 
 #endif

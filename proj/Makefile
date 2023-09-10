@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+         #
+#    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/09 17:46:55 by mamagalh@st      ###   ########.fr        #
+#    Updated: 2023/09/10 13:37:52 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME)
-	@make clean
 
 libft/libft.a:
 	@make -C libft

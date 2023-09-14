@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 00:07:47 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/14 21:15:08 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ void	free_all(t_data *dt)
 		free(dt->fd[i]);
 	}
 	free(dt->fd);
+}
+
+void	free_pathing(char ***args, char **cmd)
+{
+	int	i;
+
+	i = -1;
+	while ((*args)[++i])
+		free((*args)[i]);
+	free((*args));
+	free(*cmd);
 }
 
 void	fd_swap(int *fd1, int *fd2)

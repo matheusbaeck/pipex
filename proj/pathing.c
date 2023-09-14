@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/13 23:21:41 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/14 22:34:32 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	free_paths(char ***paths)
-{
-	int	i;
-
-	i = -1;
-	while ((*paths)[++i])
-		free((*paths)[i]);
-	free(*paths);
-}
 
 int	get_std_paths(char **envp, char ***paths)
 {
@@ -83,16 +73,11 @@ int	do_exec(char *argv, char **envp)
 		if (get_command_pathname(&cmd, envp) == EXIT_FAILURE)
 		{
 			dprintf(2, "%s: command not found\n", cmd);
-			free(cmd);
-			free(args);
+			free_pathing(&args, &cmd);
 			exit(127);
 		}
 	}
 	err = execve(cmd, args, NULL);
-	i = -1;
-	while (args[++i])
-		free(args[i]);
-	free(args);
-	free(cmd);
+	free_pathing(&args, &cmd);
 	return (err);
 }

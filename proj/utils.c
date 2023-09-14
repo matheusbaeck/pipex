@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 23:26:20 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:46:26 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,12 @@ int	do_open(char *fileName)
 {
 	int	fd;
 
-	fd = open(fileName, O_WRONLY | O_CREAT
-			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (strncmp(fileName, "here_doc", 8))
+		fd = open(fileName, O_WRONLY | O_CREAT
+				| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	else
+		fd = open(fileName, O_APPEND | O_CREAT
+				| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	return (fd);
 }
 

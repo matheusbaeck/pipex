@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 23:26:01 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/15 00:16:54 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ enum	e_main_errors {
 typedef struct s_pipex_data
 {
 	pid_t	pid;
+	pid_t	last_pid;
 	t_list	*child_lst;
 	int		**fd;
 	int		i;
-	pid_t	last_pid;
+	int		i_cmd;
 }			t_data;
 
 //pathing

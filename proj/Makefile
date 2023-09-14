@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+         #
+#    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/14 02:12:24 by mamagalh@st      ###   ########.fr        #
+#    Updated: 2023/09/15 00:37:54 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,4 +40,4 @@ ffclean: fclean
 re: fclean all
 
 test:
-	./pipex here_doc EOF cat cat out
+	./pipex here_doc a cat cat out

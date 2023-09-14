@@ -6,17 +6,21 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 23:17:18 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/15 01:04:09 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	init_all(int argc, int ***fd)
+int	init_all(int argc, char ** argv, int ***fd)
 {
 	int	status;
+	int	min_args;
 
-	if (argc < 5)
+	min_args = 5;
+	if (!strncmp(argv[1], "here_doc", 8))
+		min_args++;
+	if (argc < min_args)
 		return (FEW_ARGUMENTS);
 	status = init_pipes(fd);
 	if (status != 0)
@@ -34,7 +38,7 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 		else
 			exit(error_handler(OPEN_FILE));
 	}
-	else if ((dt->i + 1) % (argc - 3) == 0)
+	else if ((dt->i + 1) % (argc - dt->i_cmd - 1) == 0)
 	{
 		dt->fd[0][1] = do_open(argv[argc - 1]);
 		if (dt->fd[0][1] > 0)
@@ -45,24 +49,32 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 	dup2(dt->fd[1][0], STDIN_FILENO);
 	dup2(dt->fd[2][1], STDOUT_FILENO);
 	close_pipes(&(dt->fd), 0, 3);
-	exit (do_exec(argv[dt->i + 2], envp));
+	exit (do_exec(argv[dt->i + dt->i_cmd], envp));
 }
 
 int	task_parent(t_data *dt)
 {
+	int	*temp;
+
 	close(dt->fd[1][0]);
 	if (dt->i != 0)
 		close(dt->fd[1][1]);
+	temp = dt->fd[1];
 	dt->fd[1] = dt->fd[2];
 	dt->fd[2] = (int *)malloc(2 * sizeof(int));
+	free(temp);
 	if (pipe(dt->fd[2]) == -1)
-		return(error_handler(OPEN_PIPE));
+		return (error_handler(OPEN_PIPE));
 	return (0);
 }
 
 void	main_task(int argc, char **argv, char **envp, t_data *dt)
 {
-	while (++dt->i < (argc - 3))
+	dt->i_cmd = 2;
+	if (!ft_strncmp(argv[1], "here_doc", 8))
+		dt->i_cmd += 1;
+	dt->i = -1;
+	while (++dt->i < (argc - dt->i_cmd - 1))
 	{
 		dt->pid = fork();
 		if (dt->pid == -1)
@@ -74,7 +86,7 @@ void	main_task(int argc, char **argv, char **envp, t_data *dt)
 			task_child(argc, argv, envp, dt);
 		if (task_parent(dt))
 			break ;
-		if (dt->i + 1 == argc - 3)
+		if (dt->i + 1 == (argc - dt->i_cmd - 1))
 			dt->last_pid = dt->pid;
 	}
 }
@@ -110,8 +122,9 @@ int	here_doc_task(char *file_name, char *lim, t_data *dt)
 	char	*str;
 
 	str = (char *) ft_calloc((int) ft_strlen(lim) + 1, sizeof(char));
+	unlink(file_name);
 	dt->fd[0][0] = open(file_name, O_WRONLY | O_CREAT
-			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+				| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	dprintf(2, "fd is %i\n", dt->fd[0][0]);
 	if (dt->fd[0][0] == -1)
 	{
@@ -120,7 +133,7 @@ int	here_doc_task(char *file_name, char *lim, t_data *dt)
 	}
 	here_doc_loop(dt->fd[0][0], str, lim);
 	free(str);
-	dt->i += 1;
+	close(dt->fd[0][0]);
 	return (0);
 }
 
@@ -130,9 +143,8 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	int		last_status;
 
-	if (error_handler(init_all(argc, &(dt.fd))))
+	if (error_handler(init_all(argc, argv ,&(dt.fd))))
 		return (EXIT_FAILURE);
-	dt.i = -1;
 	if (!ft_strncmp(argv[1], "here_doc", 8) && (int)ft_strlen(argv[1]) == 8)
 		here_doc_task(argv[1], argv[2], &dt);
 	main_task(argc, argv, envp, &dt);
@@ -145,6 +157,8 @@ int	main(int argc, char **argv, char **envp)
 		if (dt.pid == -1)
 		{
 			close(dt.fd[0][1]);
+			if (dt.i_cmd == 2)
+				unlink(argv[1]);
 			free_all(&dt);
 			return (WEXITSTATUS(last_status));
 		}

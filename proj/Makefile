@@ -40,4 +40,4 @@ ffclean: fclean
 re: fclean all
 
 test:
-	bash /Users/mamagalh/pipex/test/test.sh
+	./pipex here_doc EOF cat cat out

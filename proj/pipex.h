@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 21:16:50 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:26:01 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_pipex_data
 //pathing
 int		get_std_paths(char **envp, char ***paths);
 int		get_command_pathname(char **comm, char **envp);
-void	free_paths(char ***paths);
 int		do_exec(char *argv, char **envp);
 int		do_open(char *fileName);
 //pipe
@@ -58,5 +57,6 @@ void	free_all(t_data *dt);
 void	fd_swap(int *fd1, int *fd2);
 int		error_handler(int err);
 void	free_pathing(char ***args, char **cmd);
+void	free_pathname(char ***paths);
 
 #endif

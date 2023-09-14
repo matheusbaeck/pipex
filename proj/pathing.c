@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 22:34:32 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:27:25 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int	get_command_pathname(char **cmd, char **envp)
 		path = ft_strjoin(temp, *cmd);
 		free(temp);
 		if (access(path, X_OK) == 0)
-			return (free(*cmd), *cmd = path, free_paths(&paths), EXIT_SUCCESS);
+			return (free(*cmd), *cmd = path, free_pathname(&paths), EXIT_SUCCESS);
 		free(path);
 	}
-	free_paths(&paths);
+	free_pathname(&paths);
 	return (EXIT_FAILURE);
 }
 
@@ -64,7 +64,6 @@ int	do_exec(char *argv, char **envp)
 	char	**args;
 	char	*cmd;
 	int		err;
-	int		i;
 
 	args = ft_split(argv, ' ');
 	cmd = ft_strdup(args[0]);

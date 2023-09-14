@@ -6,12 +6,11 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 19:22:20 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:17:18 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <errno.h>
 
 int	init_all(int argc, int ***fd)
 {
@@ -106,19 +105,20 @@ int	here_doc_loop(int fd, char *str, char *lim)
 	return (-1);
 }
 
-int	here_doc_task(char *file_name, char *lim, int *dti, t_data *dt)
+int	here_doc_task(char *file_name, char *lim, t_data *dt)
 {
 	char	*str;
 
 	str = (char *) ft_calloc((int) ft_strlen(lim) + 1, sizeof(char));
 	dt->fd[0][0] = open(file_name, O_WRONLY | O_CREAT
 			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	dprintf(2, "fd is %i\n", dt->fd[0][0]);
 	if (dt->fd[0][0] == -1)
 	{
-		free_all(&dt);
+		free_all(dt);
 		exit(error_handler(OPEN_FILE));
 	}
-	here_doc_loop(dt->fd, str, lim);
+	here_doc_loop(dt->fd[0][0], str, lim);
 	free(str);
 	dt->i += 1;
 	return (0);

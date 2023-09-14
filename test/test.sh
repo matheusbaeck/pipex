@@ -1,17 +1,4 @@
-#! /bin/bash
-
-# function test {
-# 	< $1 $2 $3 > bash
-# 	./pipex $1 $2 $3 $4
-# 	diff bash $4
-# 	if [[ $? = 0]]; then
-# 		echo OK
-# 	else
-# 		echo KO
-# 	fi;
-# }
-
-PIPEPATH=/home/math42/pipex/proj/pipex
+PIPEPATH=../proj/pipex
 
 echo "runing test 1, simple"
 $PIPEPATH  f_infile "grep .c" "wc -w" f_outfile
@@ -27,24 +14,23 @@ diff f_outfile f_outfile2 -s
 
 echo ""
 echo "runing test 1.1, wrong command, error expected"
-rm -fr f_outfile*
 $PIPEPATH   f_infile "greep -v .c" "wrong" f_outfile
 < f_infile greep -v .c | wrong > f_outfile2
 diff f_outfile f_outfile2 -s
 
 echo ""
-echo "runing test 1.2, ./ls, error expected"
-rm -fr f_outfile*
-$PIPEPATH   f_infile "./ls" "wc -w" ls f_outfile
-< f_infile ./ls | wc -w | ls >f_outfile2
+echo "runing test 1.2, wrong permition, error expected"
+chmod 200 f_infile
+$PIPEPATH   f_infile ls "grep .c" "wc" f_outfile
+< f_infile ls | grep .c | wc > f_outfile2
 diff f_outfile f_outfile2 -s
+chmod 400 f_infile
 
 echo ""
-echo "runing test 1.3, wrong permition, error expected"
-chmod 200 f_infile
-$PIPEPATH   f_infile "grep .c" "wc -w" ls f_outfile
-< f_infile grep .c | wc -w | ls >f_outfile2
-chmod 400 f_infile
+echo "runing test 1.3, ./ls, error expected"
+$PIPEPATH   f_infile "./ls" "wc -w" ls f_outfile
+echo "original"
+< f_infile ./ls | "wc -w" | ls >f_outfile2
 diff f_outfile f_outfile2 -s
 
 echo ""
@@ -55,26 +41,45 @@ diff f_outfile f_outfile2 -s
 
 echo ""
 echo "runing test 5.1, hakin 1, 3 error expected"
-$PIPEPATH   f_infile "jdgsfhdsg" "shdusah" "udhubsa" "/bin/cat f_infile" f_outfile
-echo "original"
-< f_infile jdgsfhdsg | shdusah | udhubsa | /bin/cat f_infile > f_outfile2
+$PIPEPATH   f_infile "jdgsfhdsg" "shdusah" "udhubsa" "/bin/ls" f_outfile
+< f_infile jdgsfhdsg | shdusah | udhubsa | /bin/ls > f_outfile2
 diff f_outfile f_outfile2 -s
 
 echo ""
 echo "runing test 5.2, hakin 2, 3 error expected"
 $PIPEPATH   f_infile "cat /dev/urandom" "head -1" f_outfile && cat f_outfile
-echo "original"
-< f_infile cat /dev/urandom | head -1 > f_outfile2 && cat f_outfile2
 
 echo ""
-echo "runin test 6.1, DANRODRI"
-chmod 200 f_infile
-$PIPEPATH   f_infile "cat" "ls" f_outfile
-chmod 400 f_infile
+echo "runing test danrodri, wrong permition outfile, error expected"
+chmod 000 f_infile
+$PIPEPATH   f_infile "grep .c" "wc -w" ls f_outfile
 echo "original"
-ls > f_outfile2
+< f_infile grep .c | wc -w | ls >f_outfile2
+chmod 777 f_infile
 diff f_outfile f_outfile2 -s
 
+echo ""
+echo "extra error expected"
+env -i $PIPEPATH   f_infile "jdgsfhdsg" "shdusah" "udhubsa" "/bin/ls" f_outfile
+echo "original"
+env -i < f_infile jdgsfhdsg | shdusah | udhubsa | /bin/ls > f_outfile2
+diff f_outfile f_outfile2 -s
+
+echo ""
+echo "extra error expected"
+env -i $PIPEPATH f_infile "jdgsfhdsg" "shdusah" "udhubsa" "/bin/ls" f_outfile
+echo "original"
+env -i < f_infile jdgsfhdsg | shdusah | udhubsa | /bin/ls > f_outfile2
+diff f_outfile f_outfile2 -s
+
+echo ""
+echo "extra error expected"
+chmod 000 f_infile
+env -i $PIPEPATH f_infile "/bin/ls" "/bin/cat" "/bin/cat" "/bin/cat" f_outfile
+echo "original"
+env -i < f_infile /bin/ls | /bin/cat | /bin/cat | /bin/cat | /bin/cat  > f_outfile2
+chmod 777 f_infile
+diff f_outfile f_outfile2 -s
 
 
 # cat /dev/urandom | head -1

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 02:17:23 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/14 20:58:48 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <errno.h>
 
 int	init_all(int argc, int ***fd)
 {
@@ -51,13 +50,17 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 
 int	task_parent(t_data *dt)
 {
+	int	*temp;
+
 	close(dt->fd[1][0]);
 	if (dt->i != 0)
 		close(dt->fd[1][1]);
+	temp = dt->fd[1];
 	dt->fd[1] = dt->fd[2];
 	dt->fd[2] = (int *)malloc(2 * sizeof(int));
+	free(temp);
 	if (pipe(dt->fd[2]) == -1)
-		return(error_handler(OPEN_PIPE));
+		return (error_handler(OPEN_PIPE));
 	return (0);
 }
 
@@ -81,42 +84,6 @@ void	main_task(int argc, char **argv, char **envp, t_data *dt)
 	}
 }
 
-int	here_doc_task(char *file_name, char *lim)
-{
-	char	*str;
-	char	buffer;
-	int		fd;
-	int		i;
-
-	str = (char *) malloc((ft_strlen(lim) + 1) * sizeof(char));
-	fd = open(file_name, O_WRONLY | O_CREAT
-			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	i = -1;
-	while (1)
-	{
-		while (read(0, &buffer, 1) && ++i < (int)ft_strlen(lim))
-		{
-			if (buffer != '\n')
-			{
-				if (i == (int)ft_strlen(lim))
-					return (0);
-				else
-				{
-					str[i] = buffer;
-					
-				}
-			}
-			str[i] = buffer;
-		}
-		dprintf(2, "%s %i %i\n", str, i, (int)ft_strlen(lim));
-		if (i == (int)ft_strlen(lim))
-			break;
-		else if (write(fd, str, ft_strlen(str)) == 0)
-			write(fd, &buffer, 1);
-	}
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dt;
@@ -125,8 +92,6 @@ int	main(int argc, char **argv, char **envp)
 
 	if (error_handler(init_all(argc, &(dt.fd))))
 		return (EXIT_FAILURE);
-	if (!ft_strncmp(argv[1], "here_doc", 8) && (int)ft_strlen(argv[1]) == 8)
-		here_doc_task(argv[1], argv[2]);
 	main_task(argc, argv, envp, &dt);
 	last_status = 0;
 	while (1)

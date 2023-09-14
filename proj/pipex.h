@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
+/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 00:07:09 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/09/14 21:16:50 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <sys/stat.h> 
+# include <errno.h>
 
 enum	e_main_errors {
 	OPEN_FILE = 1,
@@ -56,6 +57,6 @@ int		init_pipes(int ***fd);
 void	free_all(t_data *dt);
 void	fd_swap(int *fd1, int *fd2);
 int		error_handler(int err);
-int		err_str(int err, char *str, ...);
+void	free_pathing(char ***args, char **cmd);
 
 #endif

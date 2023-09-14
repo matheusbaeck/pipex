@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/10 23:15:53 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 00:07:47 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	error_handler(int err)
 {
 	if (err == 0)
 		return (0);
+	else if (err == OPEN_FILE)
+		perror("PIPEX cant open file");
 	else if (err == FORK_FAIL)
 		perror("PIPEX error trying to fork");
-	else if (err == EXEC_FAIL)
-		perror("PIPEX execution error");
 	else if (err == FEW_ARGUMENTS)
 		perror("PIPEX few arguments");
 	else if (err == MALLOC_FAIL_PID)
@@ -60,13 +60,5 @@ int	error_handler(int err)
 		perror("PIPEX malloc fail");
 	else if (err == OPEN_PIPE)
 		perror("PIPEX fail to open a pipe");
-	else if (err == OPEN_FILE)
-		perror("PIPEX fail to open the infile");
-	else if (err == OPEN_OUT_FILE)
-		perror("PIPEX fail to open the outfile");
-	else if (err == PATH_ERROR)
-		perror("PIPEX command not found");
-	else
-		perror(strerror(err));
 	return (err);
 }

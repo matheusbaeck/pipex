@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/10 22:43:55 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/14 00:07:09 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@
 # include <sys/stat.h> 
 
 enum	e_main_errors {
+	OPEN_FILE = 1,
 	FORK_FAIL = 2,
-	EXEC_FAIL = 3,
 	FEW_ARGUMENTS = 11,
 	MALLOC_FAIL_PID = 21,
 	MALLOC_FAIL_PTRCHILD = 131,
 	MALLOC_FAIL_CHILD = 232,
 	OPEN_PIPE = 332,
-	OPEN_FILE = 432,
-	OPEN_OUT_FILE = 532,
 	PATH_ERROR = 1273,
 	EXIT_PIPE_SWAP = -1
 };
@@ -41,6 +39,7 @@ typedef struct s_pipex_data
 	t_list	*child_lst;
 	int		**fd;
 	int		i;
+	pid_t	last_pid;
 }			t_data;
 
 //pathing
@@ -57,5 +56,6 @@ int		init_pipes(int ***fd);
 void	free_all(t_data *dt);
 void	fd_swap(int *fd1, int *fd2);
 int		error_handler(int err);
+int		err_str(int err, char *str, ...);
 
 #endif

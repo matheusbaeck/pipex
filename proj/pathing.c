@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/10 23:16:48 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/13 23:21:41 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,18 @@ int	do_exec(char *argv, char **envp)
 	cmd = ft_strdup(args[0]);
 	if (ft_strncmp(cmd, "./", 2))
 	{
-		if (get_command_pathname(&cmd, envp))
+		if (get_command_pathname(&cmd, envp) == EXIT_FAILURE)
 		{
+			dprintf(2, "%s: command not found\n", cmd);
 			free(cmd);
 			free(args);
-			exit (PATH_ERROR);
+			exit(127);
 		}
 	}
 	err = execve(cmd, args, NULL);
 	i = -1;
 	while (args[++i])
-	{
 		free(args[i]);
-	}
 	free(args);
 	free(cmd);
 	return (err);

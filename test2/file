@@ -1,8 +1,7 @@
-a.sh
-f_fileout
+b.sh
 f_infile
 f_outfile
 f_outfile2
 file
-test
+out
 test.sh

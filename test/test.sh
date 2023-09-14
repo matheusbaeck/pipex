@@ -35,13 +35,17 @@ diff f_outfile f_outfile2 -s
 echo ""
 echo "runing test 1.2, ./ls, error expected"
 rm -fr f_outfile*
-$PIPEPATH   f_infile "./ls" "wc -w" f_outfile
+$PIPEPATH   f_infile "./ls" "wc -w" ls f_outfile
+< f_infile ./ls | wc -w | ls >f_outfile2
+diff f_outfile f_outfile2 -s
 
 echo ""
 echo "runing test 1.3, wrong permition, error expected"
 chmod 200 f_infile
-$PIPEPATH   f_infile "grep .c" "wc -w" f_outfile
+$PIPEPATH   f_infile "grep .c" "wc -w" ls f_outfile
+< f_infile grep .c | wc -w | ls >f_outfile2
 chmod 400 f_infile
+diff f_outfile f_outfile2 -s
 
 echo ""
 echo "runing test 3.1, multi pipes simple"

@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/09/15 01:04:09 by math42           ###   ########.fr       */
+/*   Updated: 2023/09/15 13:58:12 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,7 @@ int	here_doc_task(char *file_name, char *lim, t_data *dt)
 	char	*str;
 
 	str = (char *) ft_calloc((int) ft_strlen(lim) + 1, sizeof(char));
-	unlink(file_name);
-	dt->fd[0][0] = open(file_name, O_WRONLY | O_CREAT
-				| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	dt->fd[0][0] = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	dprintf(2, "fd is %i\n", dt->fd[0][0]);
 	if (dt->fd[0][0] == -1)
 	{

@@ -45,7 +45,6 @@ void	free_pathname(char ***paths)
 	free((*paths));
 }
 
-
 void	fd_swap(int *fd1, int *fd2)
 {
 	int	temp;

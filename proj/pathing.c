@@ -52,7 +52,8 @@ int	get_command_pathname(char **cmd, char **envp)
 		path = ft_strjoin(temp, *cmd);
 		free(temp);
 		if (access(path, X_OK) == 0)
-			return (free(*cmd), *cmd = path, free_pathname(&paths), EXIT_SUCCESS);
+			return (free(*cmd), *cmd = path,
+				free_pathname(&paths), EXIT_SUCCESS);
 		free(path);
 	}
 	free_pathname(&paths);

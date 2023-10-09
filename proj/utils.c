@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/14 23:26:20 by math42           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:25:56 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,6 @@ void	free_pathname(char ***paths)
 	while ((*paths)[++i])
 		free((*paths)[i]);
 	free((*paths));
-}
-
-void	fd_swap(int *fd1, int *fd2)
-{
-	int	temp;
-
-	temp = *fd1;
-	*fd1 = *fd2;
-	*fd2 = temp;
 }
 
 int	do_open(char *fileName)

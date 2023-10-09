@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:00:26 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/09/15 00:16:54 by math42           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:42:08 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,20 @@ int		do_open(char *fileName);
 //pipe
 void	close_pipes(int ***fd, int i, int end);
 void	free_pipes(int ***fd, int i);
+void	fd_swap(int *fd1, int *fd2);
 int		init_pipes(int ***fd);
 //utils
 void	free_all(t_data *dt);
-void	fd_swap(int *fd1, int *fd2);
 int		error_handler(int err);
 void	free_pathing(char ***args, char **cmd);
 void	free_pathname(char ***paths);
+//here_doc
+int		here_doc_loop(int fd, char *str, char *lim);
+int		here_doc_task(char *file_name, char *lim, t_data *dt);
+//main
+int		init_all(int argc, char **argv, int ***fd);
+int		task_child(int argc, char **argv, char **envp, t_data *dt);
+int		task_parent(t_data *dt);
+void	main_task(int argc, char **argv, char **envp, t_data *dt);
 
 #endif

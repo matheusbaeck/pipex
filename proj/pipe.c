@@ -6,7 +6,7 @@
 /*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:16 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 20:35:30 by math42           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:38:20 by math42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	free_pipes(int ***fd, int i)
 		free(*fd[i]);
 	}
 	free(*fd);
+}
+
+void	fd_swap(int *fd1, int *fd2)
+{
+	int	temp;
+
+	temp = *fd1;
+	*fd1 = *fd2;
+	*fd2 = temp;
 }
 
 int	init_pipes(int ***fd)

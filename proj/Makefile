@@ -6,7 +6,7 @@
 #    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/15 13:34:12 by math42           ###   ########.fr        #
+#    Updated: 2023/10/09 17:40:24 by math42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@ NAME = pipex
 
 CC = cc
 
-SRCS =  main.c pathing.c pipe.c utils.c
+SRCS =  main.c pathing.c pipe.c utils.c here_doc.c
 
 OBJS = ${SRCS:.c=.o}
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address #-g3
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 all: $(NAME)
 

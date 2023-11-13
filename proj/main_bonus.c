@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:54:40 by math42            #+#    #+#             */
-/*   Updated: 2023/11/06 19:50:17 by mamagalh@st      ###   ########.fr       */
+/*   Updated: 2023/11/07 01:11:35 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	init_all(int argc, int ***fd)
+int	init_all(int argc, char **argv, int ***fd)
 {
 	int	status;
+	int	min_args;
 
-	if (argc < 5)
+	min_args = 5;
+	if (!strncmp(argv[1], "here_doc", 8))
+		min_args++;
+	if (argc < min_args)
 		return (FEW_ARGUMENTS);
 	status = init_pipes(fd);
 	if (status != 0)
@@ -34,10 +38,14 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 		else
 			exit(error_handler(OPEN_FILE));
 	}
-	else if ((dt->i + 1) % (argc - 3) == 0)
+	else if ((dt->i + 1) % (argc - dt->i_cmd - 1) == 0)
 	{
-		dt->fd[0][1] = open(argv[argc - 1], O_WRONLY | O_CREAT
-				| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		if (strncmp(argv[1], "here_doc", 9) == 0)
+			dt->fd[0][1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND,
+					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		else
+			dt->fd[0][1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
+					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (dt->fd[0][1] > 0)
 			fd_swap(&dt->fd[0][1], &dt->fd[2][1]);
 		else
@@ -46,7 +54,7 @@ int	task_child(int argc, char **argv, char **envp, t_data *dt)
 	dup2(dt->fd[1][0], STDIN_FILENO);
 	dup2(dt->fd[2][1], STDOUT_FILENO);
 	close_pipes(&(dt->fd), 0, 3);
-	exit (do_exec(argv[dt->i + 2], envp));
+	exit (do_exec(argv[dt->i + dt->i_cmd], envp));
 }
 
 int	task_parent(t_data *dt)
@@ -67,8 +75,11 @@ int	task_parent(t_data *dt)
 
 void	main_task(int argc, char **argv, char **envp, t_data *dt)
 {
+	dt->i_cmd = 2;
+	if (!ft_strncmp(argv[1], "here_doc", 8))
+		dt->i_cmd += 1;
 	dt->i = -1;
-	while (++dt->i < (argc - 3))
+	while (++dt->i < (argc - dt->i_cmd - 1))
 	{
 		dt->pid = fork();
 		if (dt->pid == -1)
@@ -80,7 +91,7 @@ void	main_task(int argc, char **argv, char **envp, t_data *dt)
 			task_child(argc, argv, envp, dt);
 		if (task_parent(dt))
 			break ;
-		if (dt->i + 1 == argc - 3)
+		if (dt->i + 1 == (argc - dt->i_cmd - 1))
 			dt->last_pid = dt->pid;
 	}
 }
@@ -91,8 +102,10 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	int		last_status;
 
-	if (error_handler(init_all(argc, &(dt.fd))))
+	if (error_handler(init_all(argc, argv, &(dt.fd))))
 		return (EXIT_FAILURE);
+	if (!ft_strncmp(argv[1], "here_doc", 9) && (int)ft_strlen(argv[1]) == 8)
+		here_doc_task(argv[1], argv[2], &dt);
 	main_task(argc, argv, envp, &dt);
 	last_status = 0;
 	while (1)
@@ -103,6 +116,8 @@ int	main(int argc, char **argv, char **envp)
 		if (dt.pid == -1)
 		{
 			close(dt.fd[0][1]);
+			if (strncmp(argv[1], "here_doc", 9) == 0)
+				unlink(argv[1]);
 			free_all(&dt);
 			return (WEXITSTATUS(last_status));
 		}

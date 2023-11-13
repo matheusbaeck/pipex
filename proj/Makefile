@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: math42 <math42@student.42.fr>              +#+  +:+       +#+         #
+#    By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/21 23:11:40 by mamagalh@st       #+#    #+#              #
-#    Updated: 2023/09/14 20:22:55 by math42           ###   ########.fr        #
+#    Created: 2023/11/06 20:19:40 by mamagalh@st       #+#    #+#              #
+#    Updated: 2023/11/07 01:02:44 by mamagalh@st      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,19 @@ NAME = pipex
 
 CC = cc
 
-SRCS =  main.c pathing.c pipe.c utils.c
+SRCS = main.c pathing.c pipe.c utils.c heredoc.c
+
+SRCS_BONUS = main_bonus.c pathing.c pipe.c utils.c heredoc.c
 
 OBJS = ${SRCS:.c=.o}
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address #-g3
+OBJS_BONUS = ${SRCS_BONUS:.c=.o}
+
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address #-g3
+
+ifeq ($(MAKECMDGOALS),bonus)
+  OBJS = ${OBJS_BONUS}
+endif
 
 all: $(NAME)
 
@@ -28,11 +36,11 @@ $(NAME): libft/libft.a $(OBJS)
 libft/libft.a:
 	@make -C libft
 
-clean: 
+clean:
 	@rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) *.o
 
 ffclean: fclean
 	@make fclean -C libft
@@ -41,3 +49,7 @@ re: fclean all
 
 test:
 	./pipex Makefile cat cat out
+
+.PHONY: bonus
+
+bonus: all

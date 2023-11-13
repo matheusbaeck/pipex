@@ -86,6 +86,11 @@ diff f_outfile f_outfile2 -s
 
 # bash-3.2$ fjdgsfhdsghdahdgsahjdshsa|ls -la > out
 
+# mamagalh@c1r14s3 proj % ./pipex "Makefile" "awk '/^\// {print}'" "wc -l" "outfile1.txt"
+# awk: syntax error at source line 1
+#  context is
+# 	 >>> ' <<<
+
 # void	leaks(void)
 # {
 # 	system("leaks -q pipex");

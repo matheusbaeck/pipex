@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:00:19 by math42            #+#    #+#             */
-/*   Updated: 2023/09/14 23:27:25 by math42           ###   ########.fr       */
+/*   Updated: 2023/11/06 20:40:28 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	do_exec(char *argv, char **envp)
 	{
 		if (get_command_pathname(&cmd, envp) == EXIT_FAILURE)
 		{
-			dprintf(2, "%s: command not found\n", cmd);
+			perror(cmd);
 			free_pathing(&args, &cmd);
 			exit(127);
 		}

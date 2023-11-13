@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math42 <math42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mamagalh@student.42madrid.com <mamagalh    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:12:47 by mamagalh@st       #+#    #+#             */
-/*   Updated: 2023/10/09 17:25:56 by math42           ###   ########.fr       */
+/*   Updated: 2023/11/06 20:34:00 by mamagalh@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ void	free_pathname(char ***paths)
 	free((*paths));
 }
 
-int	do_open(char *fileName)
+void	fd_swap(int *fd1, int *fd2)
 {
-	int	fd;
+	int	temp;
 
-	fd = open(fileName, O_WRONLY | O_CREAT
-			| O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	return (fd);
+	temp = *fd1;
+	*fd1 = *fd2;
+	*fd2 = temp;
 }
 
 int	error_handler(int err)

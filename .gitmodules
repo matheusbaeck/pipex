@@ -1,3 +1,0 @@
-[submodule "proj/libft"]
-	path = proj/libft
-	url = git@github.com:matheusbaeck/libft.git
